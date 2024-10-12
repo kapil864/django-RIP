@@ -26,6 +26,7 @@ class AdminSiteTests(TestCase):
 
     def test_user_list(self):
         """Test that users are listed on page."""
+
         url = reverse('admin:core_user_changelist')
         res = self.client.get(url)
 
@@ -34,6 +35,16 @@ class AdminSiteTests(TestCase):
 
     def test_edit_user_page(self):
         """Test the users edit page works."""
+
         url = reverse('admin:core_user_change', args=[self.user.id])
         res = self.client.get(url)
+
+        self.assertEqual(res.status_code, HTTPStatus.OK.value)
+
+    def test_create_user_page(self):
+        """Test the user create page works"""
+
+        url = reverse('admin:core_user_add')
+        res = self.client.get(url)
+
         self.assertEqual(res.status_code, HTTPStatus.OK.value)
