@@ -19,7 +19,7 @@ def create_user(**params):
     return get_user_model().objects.create_user(**params)
 
 
-class PubliUserApiTests(TestCase):
+class PublicUserApiTests(TestCase):
     """Test the public features of the user API"""
 
     def setUp(self):
@@ -36,7 +36,7 @@ class PubliUserApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         user = get_user_model().objects.get(email=payload['email'])
-        self.assertEqual(user.check_password(payload['password']))
+        self.assertTrue(user.check_password(payload['password']))
         self.assertNotIn('password', res.data)
 
     def test_user_with_email_exists_error(self):
@@ -47,16 +47,16 @@ class PubliUserApiTests(TestCase):
             'name': 'Test Name'
         }
 
-        create_user(**payload)
+        get_user_model().objects.create(**payload)
         res = self.client.post(CREATE_USER_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_password_too_short(self):
-        """Test an error is returned is less than 5 characters."""
+        """Test an error is returned if password is less than 5 characters."""
         payload = {
             'email': 'test@example.com',
             'password': 'pw',
-            'name': 'Test Nmae'
+            'name': 'Test Name'
         }
 
         res = self.client.post(CREATE_USER_URL, payload)
