@@ -129,7 +129,7 @@ class PrivateUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, {
             'name': self.user.name,
-            'name': self.user.email
+            'email': self.user.email
         })
 
     def test_post_me_not_allowed(self):
@@ -150,5 +150,5 @@ class PrivateUserApiTests(TestCase):
         self.user.refresh_from_db()
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(self.user.check_password(payload['password']))
+        self.assertTrue(self.user.check_password(payload['password']))
         self.assertEqual(self.user.name, payload['name'])
