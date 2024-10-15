@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_spectacular',
     'user',
+    'recipe',
 ]
 
 MIDDLEWARE = [
@@ -140,5 +141,5 @@ AUTH_USER_MODEL = 'core.User'
 
 # Tell rest framework to use open api for generating schema
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
