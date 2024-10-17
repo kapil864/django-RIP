@@ -248,12 +248,11 @@ class PrivateRecipeAPITests(TestCase):
         recipe = create_recipe(user=self.user)
         payload = {'tags': [{'name': 'lunch'}]}
 
-        res = self.client.patch()
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload, format='json')
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        new_tag = Tag.objects.get(user=self.user, nam='lunch')
+        new_tag = Tag.objects.get(user=self.user, name='lunch')
         # don't need to refresh recipe here as tags is a many to many field
         self.assertIn(new_tag, recipe.tags.all())
 
