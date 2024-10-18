@@ -28,6 +28,7 @@ services:
       - DB_HOST=db
     volumes:
       - ./app:/app
+      - dev-static-data:/vol/web
     depends_on:
       db:
         condition: service_healthy
@@ -35,3 +36,6 @@ services:
     command: >
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  dev-static-data:
