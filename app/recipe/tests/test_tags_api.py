@@ -99,8 +99,8 @@ class PrivateTagsApiTests(TestCase):
     def test_filtering_tags_assigned_to_recipes(self):
         """Test listing tags by assigned to recipes."""
 
-        tag1 = Tag.objects.create(name='Desert')
-        tag2 = Tag.objects.create(name='Dinner')
+        tag1 = Tag.objects.create(user=self.user, name='Desert')
+        tag2 = Tag.objects.create(user=self.user, name='Dinner')
         recipe = Recipe.objects.create(
             title='Apple Crumble',
             time_minutes=12,
