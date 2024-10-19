@@ -2,6 +2,7 @@
 Test for tags API/
 """
 
+from decimal import Decimal
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.test import TestCase
@@ -10,7 +11,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from recipe.serializers import TagSerializer
-from core.models import Tag
+from core.models import Tag, Recipe
 
 TAGS_URL = reverse('recipe:tag-list')
 
@@ -94,3 +95,26 @@ class PrivateTagsApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         tags = Tag.objects.filter(user=self.user)
         self.assertFalse(tags.exists())
+
+    def test_filtering_tags_assigned_to_recipes(self):
+        """Test listing tags by assigned to recipes."""
+
+        tag1 = Tag.objects.create(name='Desert')
+        tag2 = Tag.objects.create(name='Dinner')
+        recipe = Recipe.objects.create(
+            title='Apple Crumble',
+            time_minutes=12,
+            price=Decimal('34.6'),
+            user=self.user
+        )
+
+        recipe.tags.add(tag1)
+
+        res = self.client.get(TAGS_URL, {'assigned_only': 1})
+
+        s1 = TagSerializer(tag1)
+        s2 = TagSerializer(tag2)
+
+        self.assertIn(s1.data, res.data)
+        self.assertNotIn(s2.data, res.data)
+        self.assertEqual(len(res.data), 1)
