@@ -26,6 +26,7 @@ services:
       - .env
     environment:
       - DB_HOST=db
+      - DEBUG=1
     volumes:
       - ./app:/app
       - dev-static-data:/vol/web

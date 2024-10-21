@@ -6,4 +6,4 @@ set -e
 envsubst < /etc/nginx/default.conf.tpl > /etc/nginx/conf.d/default.conf
 
 # starts nginx
-nginx -g 'daemon off:'
+nginx -g 'daemon off;'
